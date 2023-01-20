@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
-import { databaseProviders } from './database.providers';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [],
-  providers: [...databaseProviders],
-  exports: [...databaseProviders],
+  imports: [
+    MongooseModule.forRoot(
+      'mongodb+srv://mollfar:misha07099217@spaceship.whelghk.mongodb.net/spaceship?retryWrites=true&w=majority',
+    ),
+  ],
 })
 export class DatabaseModule {}

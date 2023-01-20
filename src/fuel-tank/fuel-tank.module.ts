@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from '../database/database.module';
-import { databaseProviders } from '../database/database.providers';
-import { fuelTankProviders } from './providers/fuel-tank.providers';
+import { MongooseModule } from '@nestjs/mongoose';
+import { FuelTank, FuelTankSchema } from './schemas/fuel-tank.schema';
 
 @Module({
-  imports: [DatabaseModule],
-  providers: [...databaseProviders, ...fuelTankProviders],
+  imports: [
+    MongooseModule.forFeature([
+      { name: FuelTank.name, schema: FuelTankSchema, collection: 'fuel_tank' },
+    ]),
+  ],
+  providers: [],
 })
 export class FuelTankModule {}

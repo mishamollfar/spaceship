@@ -1,11 +1,13 @@
-import * as mongoose from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
+import { Scanner } from '../../scanner/schemas/scanner.schema';
 
-export const BodySchema = new mongoose.Schema({
-  name: mongoose.SchemaTypes.String,
-  vendor: mongoose.SchemaTypes.String,
-  type: mongoose.SchemaTypes.String,
-  bodyMaterial: mongoose.SchemaTypes.Number,
-  maxStorage: mongoose.SchemaTypes.Number,
-  weight: mongoose.SchemaTypes.Number,
-  price: mongoose.SchemaTypes.Number,
-});
+export type BodyDocument = HydratedDocument<Body>;
+
+@Schema()
+export class Body extends Scanner {
+  @Prop({ required: true, type: Number })
+  maxStorage: number;
+}
+
+export const BodySchema = SchemaFactory.createForClass(Body);

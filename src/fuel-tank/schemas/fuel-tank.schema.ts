@@ -1,10 +1,13 @@
-import * as mongoose from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
+import { Scanner } from '../../scanner/schemas/scanner.schema';
 
-export const FuelTankSchema = new mongoose.Schema({
-  name: mongoose.SchemaTypes.String,
-  vendor: mongoose.SchemaTypes.String,
-  type: mongoose.SchemaTypes.String,
-  fuelCapacity: mongoose.SchemaTypes.Number,
-  weight: mongoose.SchemaTypes.Number,
-  price: mongoose.SchemaTypes.Number,
-});
+export type FuelTankDocument = HydratedDocument<FuelTank>;
+
+@Schema()
+export class FuelTank extends Scanner {
+  @Prop({ required: true, type: Number })
+  fuelCapacity: number;
+}
+
+export const FuelTankSchema = SchemaFactory.createForClass(FuelTank);

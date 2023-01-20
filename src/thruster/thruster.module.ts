@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from '../database/database.module';
-import { databaseProviders } from '../database/database.providers';
-import { thrusterProviders } from './providers/thruster.providers';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Thruster, ThrusterSchema } from './schemas/thruster.schema';
 
 @Module({
-  imports: [DatabaseModule],
-  providers: [...databaseProviders, ...thrusterProviders],
+  imports: [
+    MongooseModule.forFeature([
+      { name: Thruster.name, schema: ThrusterSchema, collection: 'thruster' },
+    ]),
+  ],
+  providers: [],
 })
 export class ThrusterModule {}

@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from '../database/database.module';
-import { databaseProviders } from '../database/database.providers';
-import { bodyProviders } from './providers/body.providers';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Body, BodySchema } from './schemas/body.schema';
 
 @Module({
-  imports: [DatabaseModule],
-  providers: [...databaseProviders, ...bodyProviders],
+  imports: [
+    MongooseModule.forFeature([
+      { name: Body.name, schema: BodySchema, collection: 'body' },
+    ]),
+  ],
+  providers: [],
 })
 export class BodyModule {}

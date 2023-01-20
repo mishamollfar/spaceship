@@ -1,29 +1,47 @@
-import { Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  ValidationPipe,
+} from '@nestjs/common';
+import { Scanner } from '../schemas/scanner.schema';
+import { ScannerService } from '../services/scanner.service';
 
 @Controller('scanner')
 export class ScannerController {
+  constructor(private scannerService: ScannerService) {}
+
   @Get()
-  list() {
-    return 'List scanner';
+  async findAll(): Promise<Scanner[]> {
+    return await this.scannerService.findAll();
   }
 
   @Post()
-  create() {
-    return 'post scanner';
+  async create(
+    @Body(new ValidationPipe({ transform: true })) body: Scanner,
+  ): Promise<Scanner> {
+    return await this.scannerService.create(body);
   }
 
-  @Delete()
-  deleteAll() {
-    return 'delete scanner';
+  @Get(':id')
+  async findItem(@Param('id') id: string): Promise<Scanner> {
+    return await this.scannerService.findOne(id);
   }
 
-  @Patch(':scannerId')
-  updateItem() {
-    return 'patch scanner';
+  @Patch(':id')
+  async updateItem(
+    @Param('id') id: string,
+    @Body(new ValidationPipe({ transform: true })) body: Scanner,
+  ): Promise<Scanner> {
+    return await this.scannerService.updateOne(id, body);
   }
 
-  @Delete(':scannerId')
-  deleteItem() {
-    return 'delete item scanner';
+  @Delete(':id')
+  async deleteItem(@Param('id') id: string): Promise<Scanner> {
+    return await this.scannerService.deleteOne(id);
   }
 }

@@ -1,12 +1,16 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from '../database/database.module';
-import { databaseProviders } from '../database/database.providers';
-import { scannerProviders } from './providers/scanner.providers';
+import { MongooseModule } from '@nestjs/mongoose';
 import { ScannerController } from './controllers/scanner.controller';
+import { Scanner, ScannerSchema } from './schemas/scanner.schema';
+import { ScannerService } from './services/scanner.service';
 
 @Module({
-  imports: [DatabaseModule],
-  providers: [...databaseProviders, ...scannerProviders],
+  imports: [
+    MongooseModule.forFeature([
+      { name: Scanner.name, schema: ScannerSchema, collection: 'scanner' },
+    ]),
+  ],
+  providers: [ScannerService],
   controllers: [ScannerController],
 })
 export class ScannerModule {}
