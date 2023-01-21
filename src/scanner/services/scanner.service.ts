@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateScannerDto } from '../dto/create-scanner.dto';
 import { Scanner, ScannerDocument } from '../schemas/scanner.schema';
+import { GroupedScanner } from "../types/grouped-scanner";
 
 @Injectable()
 export class ScannerService {
@@ -13,7 +14,7 @@ export class ScannerService {
   /**
    * Method create new scanner collection document and return this document
    * @param scanner: CreateScannerDto - fields to new scanner document
-   * @return {Scanner}
+   * @return {Promise<Scanner>}
    */
   async create(scanner: CreateScannerDto): Promise<Scanner> {
     return await this.scannerModel.create(scanner);
@@ -21,7 +22,7 @@ export class ScannerService {
 
   /**
    * Method return all documents with collection - scanner and sorted by price descending
-   * @return {Scanner[]}
+   * @return {Promise<Scanner[]>}
    */
   async findAll(): Promise<Scanner[]> {
     return await this.scannerModel.find({}).exec();
@@ -30,7 +31,7 @@ export class ScannerService {
   /**
    * Method return one scanner document by id
    * @param id: string - scanner id
-   * @return {Scanner}
+   * @return {Promise<Scanner>}
    */
   async findOne(id: string): Promise<Scanner> {
     return await this.scannerModel.findById(id).exec();
@@ -39,7 +40,7 @@ export class ScannerService {
   /**
    * Method remove one scanner document by id and return this document
    * @param id: string - scanner id
-   * @return {Scanner}
+   * @return {Promise<Scanner>}
    */
   async deleteOne(id: string): Promise<Scanner> {
     return await this.scannerModel.findByIdAndRemove(id).exec();
@@ -49,11 +50,49 @@ export class ScannerService {
    * Method find one scanner document by id and update fields by body parameters. After update method return updated document
    * @param id: string - scanner id
    * @param body: CreateScannerDto - update fields
-   * @return {Scanner}
+   * @return {Promise<Scanner>}
    */
   async updateOne(id: string, body: CreateScannerDto): Promise<Scanner> {
     return await this.scannerModel
       .findOneAndUpdate({ _id: id }, { $set: body }, { new: true })
+      .exec();
+  }
+
+  /**
+   * Method return array grouped document by different types
+   * @return {Promise<Scanner[]>}
+   */
+  async findGroupedScannersByTypes(): Promise<GroupedScanner[]> {
+    return await this.scannerModel
+      .aggregate([
+        {
+          $group: {
+            _id: '$type',
+            price: {
+              $sum: '$price',
+            },
+            weight: {
+              $sum: '$weight',
+            },
+            scanner: {
+              $push: {
+                name: '$name',
+                vendor: '$vendor',
+                type: '$type',
+                price: '$price',
+                weight: '$weight',
+              },
+            },
+          },
+        },
+        {
+          $match: {
+            _id: {
+              $ne: 'any',
+            },
+          },
+        },
+      ])
       .exec();
   }
 }

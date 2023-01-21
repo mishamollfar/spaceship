@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, ValidationPipe } from '@nestjs/common';
 import { AppService } from './app.service';
 import { QueryVesselConfigsDto } from './interfaces/query-vessel-configs.dto';
 import { VesselConfigs } from './interfaces/vessel-configs';
@@ -19,12 +19,13 @@ export class AppController {
    * journey_distance: number - Minimum required Journey Distance, in Light years;
    * weight?: number - optional; Maximum allowed Total Spaceship Weight
    * }
-   * @return {VesselConfigs[]}
+   * @return {Promise<VesselConfigs[]>}
    */
   @Get('getVesselConfigs')
-  getVesselConfigs(
-    @Query() query: QueryVesselConfigsDto,
+  async getVesselConfigs(
+    @Query(new ValidationPipe({ transform: true }))
+    query: QueryVesselConfigsDto,
   ): Promise<VesselConfigs[]> {
-    return this.appService.getVesselConfigs(query);
+    return await this.appService.getVesselConfigs(query);
   }
 }

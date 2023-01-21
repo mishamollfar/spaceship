@@ -6,5 +6,6 @@ import { ScannerService } from './services/scanner.service';
   imports: [],
   providers: [ScannerService],
   controllers: [ScannerController],
+  exports: [ScannerService],
 })
 export class ScannerModule {}

@@ -11,6 +11,8 @@ Api project to serve calculated suitable spaceship configurations based on the v
 
 ## Api routes
 
+project running at the localhost:3000
+
 ```bash
 - /api - starter message
 - /api/getVesselConfigs - configuration spaceships by parameter
