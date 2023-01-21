@@ -53,7 +53,7 @@ export class ScannerService {
    */
   async updateOne(id: string, body: CreateScannerDto): Promise<Scanner> {
     return await this.scannerModel
-      .findOneAndUpdate({ _id: id }, { $set: body })
+      .findOneAndUpdate({ _id: id }, { $set: body }, { new: true })
       .exec();
   }
 }

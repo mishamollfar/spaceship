@@ -15,8 +15,8 @@ export class Scanner {
   @Prop({ required: true, enum: ScannerType })
   type: ScannerType;
 
-  @Prop({ required: true, type: String })
-  weight: string;
+  @Prop({ required: true, type: Number })
+  weight: number;
 
   @Prop({ required: true, type: Number })
   price: number;

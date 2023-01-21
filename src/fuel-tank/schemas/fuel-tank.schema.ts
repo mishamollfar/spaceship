@@ -7,7 +7,7 @@ export type FuelTankDocument = HydratedDocument<FuelTank>;
 @Schema()
 export class FuelTank extends Scanner {
   @Prop({ required: true, type: Number })
-  fuelCapacity: number;
+  fuel_capacity: number;
 }
 
 export const FuelTankSchema = SchemaFactory.createForClass(FuelTank);
