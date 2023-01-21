@@ -6,8 +6,8 @@ import {
   Param,
   Patch,
   Post,
-  ValidationPipe,
 } from '@nestjs/common';
+import { CreateScannerDto } from '../dto/create-scanner.dto';
 import { Scanner } from '../schemas/scanner.schema';
 import { ScannerService } from '../services/scanner.service';
 
@@ -17,6 +17,7 @@ export class ScannerController {
 
   /**
    * get /api/scanner - for show all scanner save by scanner collection
+   * @return {Scanner[]}
    */
   @Get()
   async findAll(): Promise<Scanner[]> {
@@ -25,18 +26,18 @@ export class ScannerController {
 
   /**
    * post /api/scanner - for create new document into scanner collection by body parameters
-   * @param body: Scanner
+   * @param body: CreateScannerDto
+   * @return {Scanner}
    */
   @Post()
-  async create(
-    @Body(new ValidationPipe({ transform: true })) body: Scanner,
-  ): Promise<Scanner> {
+  async create(@Body() body: CreateScannerDto): Promise<Scanner> {
     return await this.scannerService.create(body);
   }
 
   /**
    * get /api/scanner/:id - for show scanner document by id
    * @param id: string
+   * @return {Scanner}
    */
   @Get(':id')
   async findItem(@Param('id') id: string): Promise<Scanner> {
@@ -47,11 +48,12 @@ export class ScannerController {
    * path /api/scanner/:id - for find scanner document by id and update field by body parameters
    * @param id: string
    * @param body: Scanner
+   * @return {Scanner}
    */
   @Patch(':id')
   async updateItem(
     @Param('id') id: string,
-    @Body(new ValidationPipe({ transform: true })) body: Scanner,
+    @Body() body: CreateScannerDto,
   ): Promise<Scanner> {
     return await this.scannerService.updateOne(id, body);
   }
@@ -59,6 +61,7 @@ export class ScannerController {
   /**
    * delete /api/scanner/:id - for remove scanner document by id
    * @param id: string
+   * @return {Scanner}
    */
   @Delete(':id')
   async deleteItem(@Param('id') id: string): Promise<Scanner> {
