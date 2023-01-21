@@ -12,7 +12,7 @@ import { Thruster, ThrusterSchema } from '../thruster/schemas/thruster.schema';
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb+srv://mollfar:misha07099217@spaceship.whelghk.mongodb.net/spaceship',
+      process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/spaceship',
       { retryWrites: true, w: 'majority' },
     ),
     MongooseModule.forFeature([
